@@ -3,10 +3,26 @@ package main
 import "testing"
 
 func TestCountWords(t *testing.T) {
-	input := "one two three four five\nsix seven eight"
-	wants := 8
-	result := countWords([]byte(input))
+	input := "one two three four five"
+	wants := 5
+	result := CountWords([]byte(input))
 	if result != wants {
-		t.Errorf("countWords(%q) = %d, want %d", input, result, wants)
+		t.Errorf("countWords(%v) = %v, want %v", input, result, wants)
 	}
+	input = ""
+	wants = 0
+	result = CountWords([]byte(input))
+
+	if result != wants {
+		t.Errorf("countWords(%v) = %v, want %v", input, result, wants)
+	}
+
+	input = " "
+	wants = 0
+	result = CountWords([]byte(input))
+
+	if result != wants {
+		t.Errorf("countWords(%v) = %v, want %v", input, result, wants)
+	}
+
 }

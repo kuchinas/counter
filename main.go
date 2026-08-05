@@ -5,7 +5,15 @@ import (
 	"os"
 )
 
-func countWords(data []byte) int {
+func main() {
+	data, _ := os.ReadFile("./words.txt")
+	fmt.Println("File contains:", CountWords(data), "words.")
+}
+
+func CountWords(data []byte) int {
+	if len(data) == 0 {
+		return 0
+	}
 	wordCount := 0
 	for _, x := range data {
 		if x == ' ' {
@@ -14,9 +22,4 @@ func countWords(data []byte) int {
 	}
 	wordCount++
 	return wordCount
-}
-
-func main() {
-	data, _ := os.ReadFile("./words.txt")
-	fmt.Println("File contains:", countWords(data), "words.")
 }
