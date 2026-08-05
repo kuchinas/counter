@@ -1,28 +1,64 @@
-package main
+package main_test
 
-import "testing"
+import (
+	"testing"
+
+	counter "github.com/kuchinas/counter"
+)
 
 func TestCountWords(t *testing.T) {
-	input := "one two three four five"
-	wants := 5
-	result := CountWords([]byte(input))
-	if result != wants {
-		t.Errorf("countWords(%v) = %v, want %v", input, result, wants)
+	testCases := []struct {
+		name  string
+		input string
+		wants int
+	}{
+		{name: "five words",
+			input: "one two three four five",
+			wants: 5,
+		},
+		{
+			name:  "Empty inputs",
+			input: "",
+			wants: 0,
+		},
+		{
+			name:  "A space character",
+			input: " ",
+			wants: 0,
+		},
+		{
+			name:  "new lines",
+			input: "one, two, three\nfour, five",
+			wants: 5,
+		},
+		{
+			name:  "multiply spaces",
+			input: "This is a sentence.  This is another",
+			wants: 7,
+		},
+		{
+			name:  "Prefixed multiply spaces",
+			input: "  Hello",
+			wants: 1,
+		},
+		{
+			name:  "Suffixzed multiply spaces",
+			input: "Hello  ",
+			wants: 1,
+		},
+		{
+			name:  "Tab character",
+			input: "Hello\tWorld",
+			wants: 2,
+		},
 	}
-	input = ""
-	wants = 0
-	result = CountWords([]byte(input))
 
-	if result != wants {
-		t.Errorf("countWords(%v) = %v, want %v", input, result, wants)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := counter.CountWords([]byte(tc.input))
+			if result != tc.wants {
+				t.Errorf("countWords(%v) = %v, wants %v", tc.input, result, tc.wants)
+			}
+		})
 	}
-
-	input = " "
-	wants = 0
-	result = CountWords([]byte(input))
-
-	if result != wants {
-		t.Errorf("countWords(%v) = %v, want %v", input, result, wants)
-	}
-
 }
