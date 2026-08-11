@@ -10,15 +10,29 @@ import (
 
 func main() {
 	log.SetFlags(0)
-	file, err := os.Open("./words.txt")
+	totalWords := 0
+	if len(os.Args) < 2 {
+		log.Fatal("no filename provided")
+	}
+	filenames := os.Args[1:]
+	for _, filename := range filenames {
+		wordCount := CountWordsInFile(filename)
+		totalWords += wordCount
+		fmt.Println(wordCount, filename)
+	}
+	if len(filenames) > 1 {
+		fmt.Println(totalWords, "total")
+	}
+}
+
+func CountWordsInFile(filename string) int {
+	file, err := os.Open(filename)
 	defer file.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
-	wordCount := CountWords(file)
-	fmt.Println("File contains:", wordCount, "words.")
+	return CountWords(file)
 }
-
 func CountWords(file io.Reader) int {
 	wordsCount := 0
 	scanner := bufio.NewScanner(file)
